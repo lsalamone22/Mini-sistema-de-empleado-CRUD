@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeLeaf.org" 
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Layout/Layout :: head">
+	<meta charset="UTF-8">
+	
+</head>
+
+<body>
+
+	<header th:replace="Layout/Layout :: header"></header>
+	
+	<div class="py-4 ml-5 mr-5">
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4 class="card-tittle">
+					<a sec:authorize="hasRole('ADMIN')" th:href="@{/form}" class="btn btn-primary">Agregar empleado</a>
+					
+					<a sec:authorize="hasRole('ADMIN')" th:href="@{/exportarPDF}" class="btn btn-secondary">Exportar a PDF</a>
+					
+					<a sec:authorize="hasRole('ADMIN')" th:href="@{/exportarExcel}" class="btn btn-success">Exportar a EXCEL</a>
+				
+				</h4>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+								<th>ID</th>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Email</th>
+								<th>Fecha</th>
+								<th>Telefono</th>
+								<th>Sexo</th>
+								<th>Salario</th>
+								<th>Detalles</th>
+								<th sec:authorize="hasRole('ADMIN')">Editar</th>
+								<th sec:authorize="hasRole('ADMIN')">Eliminar</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr th:each="e : ${empleados}">
+							<td th:text=" ${e.id}"></td>
+							<td th:text=" ${e.nombre}"></td>
+							<td th:text=" ${e.apellidos}"></td>
+							<td th:text=" ${e.email}"></td>
+							<td th:text=" ${e.fecha}"></td>
+							<td th:text=" ${e.telefono}"></td>
+							<td th:text=" ${e.sexo}"></td>
+							<td th:text=" ${e.salario}"></td>
+							<td><a class="btn btn-info btn-sm" th:href="@{/ver/}+ ${e.id}" >Detalles</a></td>
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-warning btn-sm" th:href="@{/form/}+ ${e.id}" >Editar</a></td>
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger btn-sm" th:href="@{/eliminar/}+ ${e.id}" onclick="return confirm('¿Estas seguro de eliminar?');">Eliminar</a></td>							
+						</tr>			
+					</tbody>
+				</table>
+				
+				<nav th:replace="paginator-nav :: paginator">
+				</nav>
+			
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="Layout/Layout :: footer"></footer>
+</body>
+</html>
